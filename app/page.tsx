@@ -1,3 +1,10 @@
+import SignInWithGoogle from "@/components/SignInWithGoogle";
+
 export default function Home() {
-  return <h1>Hello World</h1>;
+  return (
+    <main>
+      <h1>Hello World</h1>
+      <SignInWithGoogle />
+    </main>
+  );
 }
