@@ -12,8 +12,11 @@ export default async function ProfileSetupPage() {
   if (!user) redirect("/");
 
   return (
-    <main>
-      <h1>Complete your profile</h1>
+    <main className="page">
+      <div className="page-header">
+        <h1>Complete your profile</h1>
+        <p>Add your name before exploring the feed.</p>
+      </div>
       <ProfileSetupForm />
     </main>
   );

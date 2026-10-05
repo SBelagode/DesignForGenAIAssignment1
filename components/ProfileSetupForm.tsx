@@ -18,21 +18,23 @@ export default function ProfileSetupForm() {
   }, [state, router]);
 
   return (
-    <form action={formAction}>
-      {state && !state.ok && (
-        <p style={{ color: "red" }}>{state.error}</p>
-      )}
-      <div>
-        <label htmlFor="first_name">First name</label>
-        <input id="first_name" name="first_name" type="text" required />
-      </div>
-      <div>
-        <label htmlFor="last_name">Last name</label>
-        <input id="last_name" name="last_name" type="text" required />
-      </div>
-      <button type="submit" disabled={pending}>
-        {pending ? "Saving…" : "Save"}
-      </button>
-    </form>
+    <div className="card">
+      <form action={formAction}>
+        {state && !state.ok && (
+          <p className="msg-error">{state.error}</p>
+        )}
+        <div className="form-field">
+          <label htmlFor="first_name">First name</label>
+          <input id="first_name" name="first_name" type="text" required />
+        </div>
+        <div className="form-field">
+          <label htmlFor="last_name">Last name</label>
+          <input id="last_name" name="last_name" type="text" required />
+        </div>
+        <button type="submit" disabled={pending}>
+          {pending ? "Saving…" : "Save"}
+        </button>
+      </form>
+    </div>
   );
 }

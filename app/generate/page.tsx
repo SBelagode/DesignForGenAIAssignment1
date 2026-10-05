@@ -1,40 +1,29 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import ProfileEditForm from "@/components/ProfileEditForm";
+import GenerateForm from "@/components/GenerateForm";
 import SignOutButton from "@/components/SignOutButton";
 
-export default async function ProfilePage() {
+export default async function GeneratePage() {
   const supabase = await createClient();
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) redirect("/");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("first_name, last_name, avatar_url")
-    .eq("id", user.id)
-    .single();
-
   return (
     <main className="page">
       <nav className="nav">
         <a href="/feed">Feed</a>
-        <a href="/generate">Generate</a>
         <a href="/books">Books</a>
+        <a href="/profile">Profile</a>
         <SignOutButton />
       </nav>
       <div className="page-header">
-        <h1>Profile</h1>
+        <h1>Generate</h1>
+        <p>Something always happens out there. Describe it — AI turns it into a caption.</p>
       </div>
-      <ProfileEditForm
-        userId={user.id}
-        firstName={profile?.first_name ?? ""}
-        lastName={profile?.last_name ?? ""}
-        currentAvatarUrl={profile?.avatar_url ?? null}
-      />
+      <GenerateForm />
     </main>
   );
 }

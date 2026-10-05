@@ -1,0 +1,250 @@
+/* ── Reset ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Base ───────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #111;
+  background: #f5f5f4;
+}
+
+/* ── Layout ─────────────────────────────────────────── */
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Navigation ─────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 0.875rem;
+}
+
+.nav a {
+  color: #555;
+  text-decoration: none;
+}
+
+.nav a:hover { color: #111; text-decoration: underline; }
+
+/* ── Page header ────────────────────────────────────── */
+.page-header { margin-bottom: 2rem; }
+.page-header h1 { margin: 0 0 0.35rem; }
+.page-header p  { margin: 0; color: #666; font-size: 0.9375rem; }
+
+/* ── Typography ─────────────────────────────────────── */
+h1 { font-size: 1.6rem; font-weight: 700; line-height: 1.25; margin: 0 0 1rem; }
+h2 { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.75rem; }
+p  { margin: 0 0 0.75rem; }
+a  { color: #2563eb; }
+a:hover { text-decoration: underline; }
+
+.muted { color: #666; font-size: 0.9rem; }
+
+/* ── Cards ──────────────────────────────────────────── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Buttons ────────────────────────────────────────── */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.5;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: #111;
+  color: #fff;
+  transition: background 0.15s;
+}
+
+button:hover:not(:disabled) { background: #333; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-ghost {
+  background: none;
+  border: none;
+  color: #555;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.btn-ghost:hover:not(:disabled) { background: none; color: #111; }
+
+/* ── Forms ──────────────────────────────────────────── */
+.form-field { margin-bottom: 1rem; }
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.35rem;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: #111;
+  background: #fff;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #888;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
+}
+
+input:disabled, textarea:disabled { background: #f5f5f4; color: #999; }
+
+.msg-success { color: #166534; font-size: 0.9rem; margin: 0.5rem 0; }
+.msg-error   { color: #991b1b; font-size: 0.9rem; margin: 0.5rem 0; }
+
+/* ── File input ─────────────────────────────────────── */
+input[type="file"] {
+  display: block;
+  font-size: 0.875rem;
+  color: #555;
+  margin-top: 0.25rem;
+}
+
+/* ── Book list ──────────────────────────────────────── */
+.book-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.book-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.book-list li:last-child { border-bottom: none; }
+
+/* ── Caption result ─────────────────────────────────── */
+.caption-result {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* ── Feed items ─────────────────────────────────────── */
+.feed-item {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.feed-caption  { font-size: 1.05rem; font-weight: 600; margin: 0 0 0.5rem; color: #111; }
+.feed-prompt   { font-size: 0.875rem; color: #666; margin: 0 0 0.25rem; }
+.feed-meta     { font-size: 0.75rem; color: #aaa; margin: 0 0 0.75rem; }
+
+/* ── Sort controls ──────────────────────────────────── */
+.sort-controls { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; font-size: 0.875rem; }
+a.sort-active  { font-weight: 600; color: #111; text-decoration: none; }
+
+/* ── Vote controls ──────────────────────────────────── */
+.vote-controls { display: flex; align-items: center; gap: 0.5rem; }
+
+.vote-btn {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  color: #555;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  line-height: 1.5;
+}
+.vote-btn:hover:not(:disabled) { background: #f5f5f4; color: #111; }
+.vote-btn.active {
+  background: #111;
+  border-color: #111;
+  color: #fff;
+  font-weight: 600;
+}
+
+.vote-score {
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 2ch;
+  text-align: center;
+  color: #374151;
+}
+
+/* ── Avatar ─────────────────────────────────────────── */
+.avatar-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0.75rem;
+  border: 1px solid #e5e5e5;
+}
+
+/* ── Landing page ───────────────────────────────────── */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.landing-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.landing-card h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.landing-card .landing-desc { color: #666; font-size: 0.9375rem; margin-bottom: 1.75rem; }
+.landing-card .landing-hint { font-size: 0.8rem; color: #aaa; margin: 1.25rem 0 0; }
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .page        { padding: 1.5rem 1rem 3rem; }
+  .card        { padding: 1.25rem; }
+  .feed-item   { padding: 1rem 1.25rem; }
+  .nav         { gap: 0.75rem; }
+}

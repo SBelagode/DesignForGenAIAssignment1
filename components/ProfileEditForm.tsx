@@ -25,7 +25,6 @@ export default function ProfileEditForm({
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // Ref to the hidden input — populated after upload, read by the Server Action on Save.
   const avatarUrlInputRef = useRef<HTMLInputElement>(null);
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -41,8 +40,6 @@ export default function ProfileEditForm({
     setUploadError(null);
 
     const supabase = createClient();
-    // Unique path per upload: the URL changes every time, so browsers and CDNs
-    // never serve a cached copy of the previous avatar.
     const ext = file.name.includes(".")
       ? file.name.split(".").pop()!.toLowerCase()
       : "jpg";
@@ -53,7 +50,6 @@ export default function ProfileEditForm({
       .upload(path, file, { contentType: file.type });
 
     if (error) {
-      // Surface the exact Storage error so the user can configure bucket permissions.
       setUploadError(`Upload failed: ${error.message}`);
       setUploading(false);
       return;
@@ -63,70 +59,65 @@ export default function ProfileEditForm({
       data: { publicUrl },
     } = supabase.storage.from("avatars").getPublicUrl(path);
 
-    // Write the unique URL to the hidden input for the Server Action.
     if (avatarUrlInputRef.current) {
       avatarUrlInputRef.current.value = publicUrl;
     }
-    // URL is already unique — no cache-buster suffix needed.
     setPreviewUrl(publicUrl);
     setUploading(false);
   }
 
   return (
-    <form action={formAction}>
-      {state?.ok && <p style={{ color: "green" }}>Profile saved.</p>}
-      {state && !state.ok && <p style={{ color: "red" }}>{state.error}</p>}
+    <div className="card">
+      <form action={formAction}>
+        {state?.ok && <p className="msg-success">Profile saved.</p>}
+        {state && !state.ok && <p className="msg-error">{state.error}</p>}
 
-      {previewUrl && (
-        <img
-          src={previewUrl}
-          alt="Profile photo"
-          width={96}
-          height={96}
-          style={{ objectFit: "cover", borderRadius: "50%" }}
-        />
-      )}
+        <div className="form-field">
+          <label>Profile photo</label>
+          {previewUrl && (
+            <img
+              src={previewUrl}
+              alt="Profile photo"
+              className="avatar-preview"
+            />
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            disabled={uploading}
+          />
+          {uploading && <p className="muted">Uploading…</p>}
+          {uploadError && <p className="msg-error">{uploadError}</p>}
+        </div>
 
-      <div>
-        <label htmlFor="avatar_file">Profile photo</label>
-        <input
-          id="avatar_file"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          disabled={uploading}
-        />
-        {uploading && <span> Uploading…</span>}
-        {uploadError && <p style={{ color: "red" }}>{uploadError}</p>}
-      </div>
+        <input type="hidden" name="avatar_url" ref={avatarUrlInputRef} />
 
-      {/* Populated by ref after a successful upload; empty string means no new upload. */}
-      <input type="hidden" name="avatar_url" ref={avatarUrlInputRef} />
+        <div className="form-field">
+          <label htmlFor="first_name">First name</label>
+          <input
+            id="first_name"
+            name="first_name"
+            type="text"
+            required
+            defaultValue={firstName}
+          />
+        </div>
+        <div className="form-field">
+          <label htmlFor="last_name">Last name</label>
+          <input
+            id="last_name"
+            name="last_name"
+            type="text"
+            required
+            defaultValue={lastName}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="first_name">First name</label>
-        <input
-          id="first_name"
-          name="first_name"
-          type="text"
-          required
-          defaultValue={firstName}
-        />
-      </div>
-      <div>
-        <label htmlFor="last_name">Last name</label>
-        <input
-          id="last_name"
-          name="last_name"
-          type="text"
-          required
-          defaultValue={lastName}
-        />
-      </div>
-
-      <button type="submit" disabled={pending || uploading}>
-        {pending ? "Saving…" : "Save Profile"}
-      </button>
-    </form>
+        <button type="submit" disabled={pending || uploading}>
+          {pending ? "Saving…" : "Save Profile"}
+        </button>
+      </form>
+    </div>
   );
 }
