@@ -13,6 +13,12 @@ export default async function BooksPage() {
 
   if (!user) redirect("/");
 
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("first_name")
+    .eq("id", user.id)
+    .single();
+
   // Anon client: no session cookies — queries as `anon` role, matching Assignment 2 RLS.
   const anonSupabase = createAnonClient();
   const { data: books, error } = await anonSupabase
@@ -26,7 +32,10 @@ export default async function BooksPage() {
 
   return (
     <main>
-      <SignOutButton />
+      <nav>
+        {profile?.first_name && <span>Welcome, {profile.first_name} | </span>}
+        <a href="/profile">Profile</a> | <SignOutButton />
+      </nav>
       <h1>Books</h1>
       <ul>
         {books.map((book) => (
