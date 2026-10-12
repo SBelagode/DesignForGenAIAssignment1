@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
   // Temporary response captures session cookies written by signInWithIdToken.
   // We defer creating the final redirect until we know the destination.
-  const tempResponse = NextResponse.redirect(new URL("/books", request.url), {
+  const tempResponse = NextResponse.redirect(new URL("/feed", request.url), {
     status: 303,
   });
 
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     Boolean(profile?.last_name?.trim());
 
   if (isProfileComplete) {
-    // tempResponse already points to /books and carries the session cookies.
+    // tempResponse already points to /feed and carries the session cookies.
     return tempResponse;
   }
 

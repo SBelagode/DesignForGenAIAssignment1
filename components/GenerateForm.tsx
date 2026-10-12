@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { startTransition, useActionState, useRef, useState } from "react";
 import { generateCaption, type GenerateState } from "@/app/captions/actions";
+import CaptionActions from "@/components/CaptionActions";
 
 const EXAMPLES = [
   "Waited 25 min for the 1 train, then three pulled in at once",
@@ -13,11 +14,32 @@ const EXAMPLES = [
 ];
 
 export default function GenerateForm() {
+  // Prompt behind the current result, so Regenerate reuses it even if the textarea changes.
+  const lastPromptRef = useRef("");
+  // Drops submits that arrive before `pending` re-renders (e.g. fast double-clicks).
+  const inFlightRef = useRef(false);
+
   const [state, formAction, pending] = useActionState<GenerateState, FormData>(
-    generateCaption,
+    async (prev, formData) => {
+      if (inFlightRef.current) return prev;
+      inFlightRef.current = true;
+      try {
+        lastPromptRef.current = (formData.get("situation") as string | null) ?? "";
+        return await generateCaption(prev, formData);
+      } finally {
+        inFlightRef.current = false;
+      }
+    },
     null
   );
   const [situation, setSituation] = useState("");
+
+  function regenerate() {
+    if (pending || !lastPromptRef.current) return;
+    const formData = new FormData();
+    formData.set("situation", lastPromptRef.current);
+    startTransition(() => formAction(formData));
+  }
 
   return (
     <div className="card">
@@ -37,22 +59,21 @@ export default function GenerateForm() {
           />
         </div>
 
-        <p className="muted">
-          Need a nudge?{" "}
-          {EXAMPLES.map((ex, i) => (
-            <span key={i}>
+        <div className="nudge">
+          <p className="muted nudge-label">Need a nudge? Try clicking one of these prompts.</p>
+          <div className="chips">
+            {EXAMPLES.map((ex, i) => (
               <button
+                key={i}
                 type="button"
-                className="btn-ghost"
-                style={{ fontSize: "0.8rem" }}
+                className="chip"
                 onClick={() => setSituation(ex)}
               >
                 {ex}
               </button>
-              {i < EXAMPLES.length - 1 ? " · " : ""}
-            </span>
-          ))}
-        </p>
+            ))}
+          </div>
+        </div>
 
         <button type="submit" disabled={pending}>
           {pending ? "Generating…" : "Generate Caption"}
@@ -62,16 +83,43 @@ export default function GenerateForm() {
           <p className="msg-error">{state.error}</p>
         )}
 
-        {state?.ok && (
-          <div className="caption-result">
+        <div className="caption-result">
+          <div className="caption-result-header">
             <h2>Your caption</h2>
-            <p>{state.caption}</p>
-            <p className="muted">
-              It&apos;s on the feed.{" "}
-              <a href="/feed">See how it does →</a>
-            </p>
+            {state?.ok && (
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={regenerate}
+                disabled={pending}
+              >
+                {pending ? "Regenerating…" : "↻ Regenerate"}
+              </button>
+            )}
           </div>
-        )}
+          <div
+            className={`result-card${pending || !state?.ok ? " result-card-empty" : ""}`}
+            aria-live="polite"
+            aria-busy={pending}
+          >
+            {pending ? (
+              <p className="result-placeholder">Generating your caption…</p>
+            ) : state?.ok ? (
+              <>
+                <p className="result-caption">{state.caption}</p>
+                <div className="result-footer">
+                  <p className="muted">
+                    It&apos;s on the feed.{" "}
+                    <a href="/feed">See how it does →</a>
+                  </p>
+                  <CaptionActions text={state.caption} />
+                </div>
+              </>
+            ) : (
+              <p className="result-placeholder">Your AI caption will appear here.</p>
+            )}
+          </div>
+        </div>
       </form>
     </div>
   );

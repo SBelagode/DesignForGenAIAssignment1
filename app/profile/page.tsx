@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProfileEditForm from "@/components/ProfileEditForm";
 import SignOutButton from "@/components/SignOutButton";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -22,8 +23,10 @@ export default async function ProfilePage() {
     <main className="page">
       <nav className="nav">
         <a href="/feed">Feed</a>
-        <a href="/generate">Generate</a>
+        <a href="/generate">+ Generate</a>
         <a href="/books">Books</a>
+        <a href="/profile" aria-current="page">Profile</a>
+        <ThemeToggle />
         <SignOutButton />
       </nav>
       <div className="page-header">

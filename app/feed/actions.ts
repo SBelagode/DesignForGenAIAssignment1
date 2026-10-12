@@ -42,7 +42,7 @@ export async function castVote(
     });
     if (error) {
       console.error("[votes] insert failed:", error.code, error.message);
-      return { ok: false, error: `Vote failed: ${error.message}` };
+      return { ok: false, error: "Vote failed. Please try again." };
     }
   } else if (existing.vote_value === voteValue) {
     // Clicking the active vote again — remove it.
@@ -52,7 +52,7 @@ export async function castVote(
       .eq("id", existing.id);
     if (error) {
       console.error("[votes] delete failed:", error.code, error.message);
-      return { ok: false, error: `Vote failed: ${error.message}` };
+      return { ok: false, error: "Vote failed. Please try again." };
     }
   } else {
     // Switching direction — update the existing row.
@@ -62,7 +62,7 @@ export async function castVote(
       .eq("id", existing.id);
     if (error) {
       console.error("[votes] update failed:", error.code, error.message);
-      return { ok: false, error: `Vote failed: ${error.message}` };
+      return { ok: false, error: "Vote failed. Please try again." };
     }
   }
 

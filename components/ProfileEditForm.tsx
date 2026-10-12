@@ -50,7 +50,8 @@ export default function ProfileEditForm({
       .upload(path, file, { contentType: file.type });
 
     if (error) {
-      setUploadError(`Upload failed: ${error.message}`);
+      console.error("[avatar] upload failed:", error.message);
+      setUploadError("Upload failed. Please try again.");
       setUploading(false);
       return;
     }

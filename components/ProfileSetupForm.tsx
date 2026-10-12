@@ -13,7 +13,7 @@ export default function ProfileSetupForm() {
 
   useEffect(() => {
     if (state?.ok) {
-      router.push("/books");
+      router.push("/feed");
     }
   }, [state, router]);
 

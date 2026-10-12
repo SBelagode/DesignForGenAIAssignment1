@@ -45,7 +45,7 @@ export async function updateProfile(
 
   if (error) {
     console.error("[profile] update failed:", error.code, error.message);
-    return { ok: false, error: `Save failed: ${error.message}` };
+    return { ok: false, error: "Couldn't save your profile. Please try again." };
   }
 
   return { ok: true };
