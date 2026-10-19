@@ -24,7 +24,7 @@ export default async function GeneratePage() {
       </nav>
       <div className="page-header">
         <h1>Generate</h1>
-        <p>Something always happens out there. Describe it — AI turns it into a caption.</p>
+        <p>Upload a photo or meme — AI captions it for Columbia student life.</p>
       </div>
       <GenerateForm />
     </main>

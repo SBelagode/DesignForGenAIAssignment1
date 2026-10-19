@@ -4,6 +4,7 @@ import VoteButtons from "@/components/VoteButtons";
 import CaptionActions from "@/components/CaptionActions";
 import SignOutButton from "@/components/SignOutButton";
 import ThemeToggle from "@/components/ThemeToggle";
+import { IMAGE_USER_PROMPT } from "@/lib/memeImages";
 
 type VoteRow = { vote_value: number; user_id: string };
 
@@ -42,7 +43,9 @@ export default async function FeedPage({
 
   let query = supabase
     .from("generations")
-    .select("id, generated_text, user_prompt, created_at, votes(vote_value, user_id)");
+    .select(
+      "id, generated_text, user_prompt, source_image_url, created_at, votes(vote_value, user_id)"
+    );
 
   if (activeFilter === "top-today") {
     // Current calendar day in the server's timezone — the same zone used to
@@ -134,8 +137,20 @@ export default async function FeedPage({
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {generations.map((g) => (
           <li key={g.id} className="feed-item">
+            {g.source_image_url && (
+              <img
+                src={g.source_image_url}
+                alt={`Meme: ${g.generated_text}`}
+                className="feed-image"
+                loading="lazy"
+                decoding="async"
+              />
+            )}
             <p className="feed-caption">{g.generated_text}</p>
-            <p className="feed-prompt">{g.user_prompt}</p>
+            {/* Image posts store a fixed placeholder prompt; only show real typed situations. */}
+            {g.user_prompt && g.user_prompt !== IMAGE_USER_PROMPT && (
+              <p className="feed-prompt">{g.user_prompt}</p>
+            )}
             <p className="feed-meta">{new Date(g.created_at).toLocaleString()}</p>
             <div className="feed-actions">
               <VoteButtons
