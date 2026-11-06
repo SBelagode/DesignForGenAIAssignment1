@@ -9,7 +9,7 @@ export default async function ProfileSetupPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/");
+  if (!user) redirect("/signin");
 
   return (
     <main className="page">

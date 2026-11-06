@@ -10,14 +10,13 @@ export default async function GeneratePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/");
+  if (!user) redirect("/signin");
 
   return (
     <main className="page">
       <nav className="nav">
         <a href="/feed">Feed</a>
         <a href="/generate" aria-current="page">+ Generate</a>
-        <a href="/books">Books</a>
         <a href="/profile">Profile</a>
         <ThemeToggle />
         <SignOutButton />

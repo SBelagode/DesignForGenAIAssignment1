@@ -11,7 +11,7 @@ export default async function ProfilePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/");
+  if (!user) redirect("/signin");
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -24,7 +24,6 @@ export default async function ProfilePage() {
       <nav className="nav">
         <a href="/feed">Feed</a>
         <a href="/generate">+ Generate</a>
-        <a href="/books">Books</a>
         <a href="/profile" aria-current="page">Profile</a>
         <ThemeToggle />
         <SignOutButton />

@@ -39,7 +39,7 @@ export default async function FeedPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/");
+  if (!user) redirect("/signin");
 
   let query = supabase
     .from("generations")
@@ -95,7 +95,6 @@ export default async function FeedPage({
       <nav className="nav">
         <a href="/feed" aria-current="page">Feed</a>
         <a href="/generate">+ Generate</a>
-        <a href="/books">Books</a>
         <a href="/profile">Profile</a>
         <ThemeToggle />
         <SignOutButton />

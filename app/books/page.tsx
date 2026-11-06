@@ -36,7 +36,6 @@ export default async function BooksPage() {
       <nav className="nav">
         <a href="/feed">Feed</a>
         <a href="/generate">+ Generate</a>
-        <a href="/books" aria-current="page">Books</a>
         <a href="/profile">Profile</a>
         {profile?.first_name && (
           <span className="muted" style={{ marginLeft: "auto" }}>

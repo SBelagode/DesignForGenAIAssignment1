@@ -56,7 +56,10 @@ export async function POST(request: NextRequest) {
       error.status,
       error.message
     );
-    return NextResponse.redirect(new URL("/?error=auth_failed", request.url));
+    return NextResponse.redirect(
+      new URL("/signin?error=auth_failed", request.url),
+      { status: 303 }
+    );
   }
 
   // Session is now in memory — query profiles without a separate client.
